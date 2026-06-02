@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check, CheckCircle, FileText, Image, X } from 'lucide-react';
 import { useApp } from './AppProvider';
+import { exportAsPdf, exportAsSvg } from '@/lib/export';
 
 export function ExportModal() {
   const { setShowExport, blueprint } = useApp();
@@ -26,11 +27,19 @@ export function ExportModal() {
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
   async function handleDownload() {
+    if (!blueprint) return;
     setStatus('preparing');
-    await new Promise(r => setTimeout(r, 1600));
-    setStatus('done');
-    await new Promise(r => setTimeout(r, 1400));
-    close();
+    try {
+      if (format === 'pdf') {
+        await exportAsPdf(blueprint, slug);
+      } else {
+        exportAsSvg(blueprint, slug);
+      }
+      setStatus('done');
+      setTimeout(close, 1400);
+    } catch {
+      setStatus('idle');
+    }
   }
 
   return (
