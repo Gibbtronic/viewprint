@@ -6,8 +6,8 @@ import { createClient } from '@/lib/supabase';
 import { useApp } from './AppProvider';
 
 export function AuthModal() {
-  const { setShowAuth } = useApp();
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const { setShowAuth, authMode } = useApp();
+  const [mode, setMode] = useState<'signin' | 'signup'>(authMode);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

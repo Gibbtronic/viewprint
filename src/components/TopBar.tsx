@@ -125,7 +125,7 @@ export function TopBar() {
               <button
                 className="btn btn--primary"
                 style={{ borderRadius: 999, paddingLeft: 20, paddingRight: 20 }}
-                onClick={() => setShowAuth(true)}
+                onClick={() => setShowAuth(true, 'signup')}
               >
                 Get started &rarr;
               </button>

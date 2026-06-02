@@ -15,7 +15,8 @@ interface AppState {
   clearBlueprint: () => void;
   signOut: () => Promise<void>;
   showAuth: boolean;
-  setShowAuth: (v: boolean) => void;
+  setShowAuth: (v: boolean, mode?: 'signin' | 'signup') => void;
+  authMode: 'signin' | 'signup';
   showExport: boolean;
   setShowExport: (v: boolean) => void;
   showUpload: boolean;
@@ -58,7 +59,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [user, setUserState] = useState<User | null>(null);
   const [markdown, setMarkdownState] = useState<string>(() => load(LS.markdown, ''));
   const [currentId, setCurrentId] = useState<string | null>(() => load(LS.id, null));
-  const [showAuth, setShowAuth] = useState(false);
+  const [showAuth, setShowAuthState] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+
+  const setShowAuth = useCallback((v: boolean, mode: 'signin' | 'signup' = 'signin') => {
+    if (v) setAuthMode(mode);
+    setShowAuthState(v);
+  }, []);
   const [showExport, setShowExport] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
 
@@ -102,7 +109,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     <AppContext.Provider value={{
       user, markdown, currentId, blueprint,
       setMarkdown, clearBlueprint, signOut,
-      showAuth, setShowAuth,
+      showAuth, setShowAuth, authMode,
       showExport, setShowExport,
       showUpload, setShowUpload,
     }}>
