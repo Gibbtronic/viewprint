@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Lock, Mail, User, X } from 'lucide-react';
+import { Lock, Mail, MailCheck, User, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase';
 import { useApp } from './AppProvider';
 
@@ -13,6 +13,7 @@ export function AuthModal() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -58,9 +59,42 @@ export function AuthModal() {
           : err.message);
         return;
       }
+      setConfirmed(true);
+      return;
     }
 
     close();
+  }
+
+  if (confirmed) {
+    return (
+      <div className="modal-overlay" ref={overlayRef} onClick={e => { if (e.target === overlayRef.current) close(); }}>
+        <div className="modal" style={{ maxWidth: 440 }}>
+          <div className="modal__hdr">
+            <div />
+            <button className="icon-btn" onClick={close}><X size={16} /></button>
+          </div>
+          <div className="modal__body" style={{ textAlign: 'center', paddingTop: 8, paddingBottom: 32 }}>
+            <div style={{
+              width: 56, height: 56, borderRadius: '50%',
+              background: 'var(--success-50)', display: 'flex',
+              alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
+            }}>
+              <MailCheck size={26} color="var(--success-500)" />
+            </div>
+            <h2 style={{ fontSize: 'var(--t-20)', fontWeight: 600, margin: '0 0 8px' }}>
+              Check your email
+            </h2>
+            <p style={{ fontSize: 'var(--t-14)', color: 'var(--fg-2)', margin: '0 0 24px', lineHeight: 1.5 }}>
+              We&apos;ve sent a confirmation link to <strong>{email}</strong>. Click it to activate your account, then sign in.
+            </p>
+            <button className="btn btn--primary btn--block" onClick={close}>
+              Got it
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
