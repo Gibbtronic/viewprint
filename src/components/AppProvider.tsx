@@ -18,6 +18,8 @@ interface AppState {
   setShowAuth: (v: boolean) => void;
   showExport: boolean;
   setShowExport: (v: boolean) => void;
+  showUpload: boolean;
+  setShowUpload: (v: boolean) => void;
 }
 
 const AppContext = createContext<AppState | null>(null);
@@ -58,6 +60,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [currentId, setCurrentId] = useState<string | null>(() => load(LS.id, null));
   const [showAuth, setShowAuth] = useState(false);
   const [showExport, setShowExport] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -101,6 +104,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setMarkdown, clearBlueprint, signOut,
       showAuth, setShowAuth,
       showExport, setShowExport,
+      showUpload, setShowUpload,
     }}>
       {children}
     </AppContext.Provider>

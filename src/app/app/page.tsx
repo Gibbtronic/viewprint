@@ -43,7 +43,7 @@ function rowToSavedBlueprint(row: DbRow): SavedBlueprint {
 }
 
 export default function DashboardPage() {
-  const { user, setMarkdown, setShowAuth } = useApp();
+  const { user, setMarkdown, setShowAuth, setShowUpload } = useApp();
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<FilterTab>('All');
@@ -126,7 +126,7 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="screen__hdr-actions">
-            <button className="btn btn--primary" onClick={() => router.push('/')}>
+            <button className="btn btn--primary" onClick={() => setShowUpload(true)}>
               <Plus size={14} />
               New blueprint
             </button>

@@ -7,7 +7,7 @@ import { Download, Layers, LogOut, Plus, User } from 'lucide-react';
 import { useApp } from './AppProvider';
 
 export function TopBar() {
-  const { user, signOut, blueprint, setShowAuth, setShowExport } = useApp();
+  const { user, signOut, blueprint, setShowAuth, setShowExport, setShowUpload } = useApp();
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -74,7 +74,7 @@ export function TopBar() {
             </button>
             <button
               className="nav-link"
-              onClick={() => handleNavClick('/')}
+              onClick={() => setShowUpload(true)}
             >
               <Plus size={15} />
               New
