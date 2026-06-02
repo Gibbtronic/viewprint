@@ -64,22 +64,24 @@ export function TopBar() {
               </text>
             </svg>
           </Link>
-          <nav className="topbar__nav">
-            <button
-              className={`nav-link${pathname === '/app' ? ' nav-link--active' : ''}`}
-              onClick={() => handleNavClick('/app')}
-            >
-              <Layers size={15} />
-              My blueprints
-            </button>
-            <button
-              className="nav-link"
-              onClick={() => setShowUpload(true)}
-            >
-              <Plus size={15} />
-              New
-            </button>
-          </nav>
+          {user && (
+            <nav className="topbar__nav">
+              <button
+                className={`nav-link${pathname === '/app' ? ' nav-link--active' : ''}`}
+                onClick={() => handleNavClick('/app')}
+              >
+                <Layers size={15} />
+                My blueprints
+              </button>
+              <button
+                className="nav-link"
+                onClick={() => setShowUpload(true)}
+              >
+                <Plus size={15} />
+                New
+              </button>
+            </nav>
+          )}
         </div>
 
         {/* Center — segmented control when a blueprint is open */}
@@ -112,9 +114,22 @@ export function TopBar() {
           )}
 
           {!user ? (
-            <button className="btn btn--primary" onClick={() => setShowAuth(true)}>
-              Sign in
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <button
+                className="btn btn--ghost"
+                style={{ fontWeight: 500, color: 'var(--fg-1)' }}
+                onClick={() => setShowAuth(true)}
+              >
+                Sign in
+              </button>
+              <button
+                className="btn btn--primary"
+                style={{ borderRadius: 999, paddingLeft: 20, paddingRight: 20 }}
+                onClick={() => setShowAuth(true)}
+              >
+                Get started &rarr;
+              </button>
+            </div>
           ) : (
             <div className="usermenu" ref={menuRef}>
               <button className="usermenu__trigger" onClick={() => setMenuOpen(v => !v)}>
