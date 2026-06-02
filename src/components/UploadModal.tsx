@@ -106,17 +106,22 @@ export function UploadModal() {
       ref={overlayRef}
       onClick={e => { if (e.target === overlayRef.current) close(); }}
     >
-      <div className="modal" style={{ maxWidth: 520 }}>
+      <div className="modal" style={{ maxWidth: 580 }}>
         <div className="modal__hdr">
           <div>
             <div className="eyebrow" style={{ fontSize: 'var(--t-11)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--fg-2)' }}>
               New blueprint
             </div>
-            <h2 style={{ margin: '6px 0 0', fontSize: 'var(--t-20)', fontWeight: 600 }}>
-              Upload a markdown file
+            <h2 style={{ margin: '6px 0 8px', fontSize: 'var(--t-20)', fontWeight: 600 }}>
+              Visualize from a markdown file
             </h2>
+            <p style={{ margin: 0, fontSize: 'var(--t-14)', color: 'var(--fg-2)', lineHeight: 1.5 }}>
+              Upload a structured markdown file describing your service stages, swimlanes, and KPIs — Viewprint renders it as an interactive blueprint.
+            </p>
           </div>
-          <button className="icon-btn" onClick={close}><X size={16} /></button>
+          <button className="icon-btn" onClick={close} style={{ alignSelf: 'flex-start' }}>
+            <X size={16} />
+          </button>
         </div>
 
         <div className="modal__body">
@@ -140,23 +145,24 @@ export function UploadModal() {
             <div className="dropzone__icon">
               <Upload size={24} color="var(--brand-500)" />
             </div>
-            <div className="dropzone__title">Drop your blueprint markdown here</div>
+            <div className="dropzone__title">Upload your blueprint markdown</div>
             <p className="dropzone__sub">
               Drag &amp; drop a <code>.md</code> or <code>.txt</code> file, or click to browse
             </p>
             {error && <div className="dropzone__error">{error}</div>}
             <div className="dropzone__meta">
               <FileText size={12} />
-              Structured markdown with stage sections and swimlane fields
+              Markdown format with stage sections and swimlane fields
             </div>
           </div>
 
-          <div className="form-divider">or</div>
-
-          <button className="btn btn--ghost btn--block" onClick={loadDemo}>
-            <Sparkles size={14} />
-            Load demo blueprint
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 20 }}>
+            <span style={{ fontSize: 'var(--t-14)', color: 'var(--fg-2)' }}>Don&apos;t have a file yet?</span>
+            <button className="btn btn--ghost" onClick={loadDemo}>
+              <Sparkles size={14} />
+              Load demo blueprint
+            </button>
+          </div>
         </div>
       </div>
     </div>
