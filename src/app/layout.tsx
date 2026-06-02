@@ -9,6 +9,7 @@ import { ModalsWrapper } from '@/components/ModalsWrapper';
 export const metadata: Metadata = {
   title: 'Viewprint — Service blueprint visualizer',
   description: 'Turn a structured Markdown file into an interactive service blueprint.',
+  icons: { icon: '/logo-mark-tile.svg' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

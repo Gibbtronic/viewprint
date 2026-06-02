@@ -52,13 +52,16 @@ export function TopBar() {
         {/* Left */}
         <div className="topbar__left">
           <Link href="/" className="logo-btn">
-            <svg width="120" height="22" viewBox="0 0 120 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1" y="1" width="8" height="8" rx="1" stroke="#4F46E5" strokeWidth="1.5" fill="none"/>
-              <rect x="1" y="13" width="8" height="8" rx="1" stroke="#4F46E5" strokeWidth="1.5" fill="none"/>
-              <rect x="11" y="1" width="8" height="8" rx="1" stroke="#4F46E5" strokeWidth="1.5" fill="none" opacity="0.4"/>
-              <rect x="11" y="13" width="8" height="8" rx="1" stroke="#4F46E5" strokeWidth="1.5" fill="none" opacity="0.4"/>
-              <text x="28" y="16" fontFamily="Inter, system-ui, sans-serif" fontSize="15" fontWeight="600" fill="#4F46E5">View</text>
-              <text x="56" y="16" fontFamily="Inter, system-ui, sans-serif" fontSize="15" fontWeight="600" fill="#0B0B0F">print</text>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 178 48" width="119" height="32" role="img" aria-label="Viewprint">
+              <circle cx="8" cy="15" r="2.6" fill="#4F46E5"/>
+              <circle cx="8" cy="24" r="2.6" fill="#4F46E5"/>
+              <circle cx="8" cy="33" r="2.6" fill="#4F46E5"/>
+              <rect x="14" y="12" width="28" height="6" rx="3" fill="#4F46E5"/>
+              <rect x="14" y="21" width="20" height="6" rx="3" fill="#A5B4FC"/>
+              <rect x="14" y="30" width="24" height="6" rx="3" fill="#C7D2FE"/>
+              <text x="50" y="31" fontFamily="Inter, system-ui, sans-serif" fontSize="22" fontWeight="600" letterSpacing="-0.015em">
+                <tspan fill="#4F46E5">View</tspan><tspan fill="#0B0B0F">print</tspan>
+              </text>
             </svg>
           </Link>
           <nav className="topbar__nav">
