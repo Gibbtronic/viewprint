@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FileText, Layers, MoreHorizontal, Plus, Search } from 'lucide-react';
+import { FileText, Layers, MoreHorizontal, Plus, Search, Trash2 } from 'lucide-react';
 import { useApp } from '@/components/AppProvider';
 import { createClient } from '@/lib/supabase';
 import { parseMarkdown } from '@/lib/parser';
@@ -49,6 +49,16 @@ export default function DashboardPage() {
   const [filter, setFilter] = useState<FilterTab>('All');
   const [blueprints, setBlueprints] = useState<SavedBlueprint[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (!menuRef.current?.contains(e.target as Node)) setOpenMenuId(null);
+    }
+    if (openMenuId) document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [openMenuId]);
 
   useEffect(() => {
     if (!user) { setLoading(false); return; }
@@ -90,6 +100,12 @@ export default function DashboardPage() {
   function openBlueprint(bp: SavedBlueprint) {
     setMarkdown(bp.markdown ?? '', bp.id);
     router.push(`/b/${bp.id}`);
+  }
+
+  async function deleteBlueprint(id: string) {
+    setOpenMenuId(null);
+    await createClient().from('blueprints').delete().eq('id', id);
+    setBlueprints(prev => prev.filter(bp => bp.id !== id));
   }
 
   const initials = user.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
@@ -200,7 +216,26 @@ export default function DashboardPage() {
                     </td>
                     <td style={{ color: 'var(--fg-2)', fontSize: 'var(--t-12)' }}>{bp.lastEdited}</td>
                     <td onClick={e => e.stopPropagation()}>
-                      <button className="icon-btn"><MoreHorizontal size={15} /></button>
+                      <div style={{ position: 'relative' }} ref={openMenuId === bp.id ? menuRef : null}>
+                        <button
+                          className="icon-btn"
+                          onClick={() => setOpenMenuId(openMenuId === bp.id ? null : bp.id)}
+                        >
+                          <MoreHorizontal size={15} />
+                        </button>
+                        {openMenuId === bp.id && (
+                          <div className="popover" style={{ position: 'absolute', right: 0, top: '100%', minWidth: 140, zIndex: 50 }}>
+                            <button
+                              className="popover__item"
+                              style={{ color: 'var(--error-500)' }}
+                              onClick={() => deleteBlueprint(bp.id)}
+                            >
+                              <Trash2 size={15} />
+                              Delete
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
