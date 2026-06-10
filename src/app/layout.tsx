@@ -7,7 +7,7 @@ import { ExportModal } from '@/components/ExportModal';
 import { ModalsWrapper } from '@/components/ModalsWrapper';
 
 export const metadata: Metadata = {
-  title: 'Viewprint — Service blueprint visualizer',
+  title: 'Viewprint — Service blueprint visualiser',
   description: 'Turn a structured Markdown file into an interactive service blueprint.',
   icons: { icon: '/logo-mark-tile.svg' },
 };

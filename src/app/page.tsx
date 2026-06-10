@@ -93,10 +93,10 @@ export default function LandingPage() {
         <div className="landing__hero">
           <div className="pill pill--brand">
             <FileText size={12} />
-            Service blueprint visualizer
+            Service blueprint visualiser
           </div>
           <h1 className="hero-title">
-            Visualize your{' '}
+            Visualise your{' '}
             <span className="hero-title__accent">service blueprint</span>
             {' '}from a markdown file
           </h1>

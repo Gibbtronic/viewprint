@@ -113,7 +113,7 @@ export function UploadModal() {
               New blueprint
             </div>
             <h2 style={{ margin: '6px 0 8px', fontSize: 'var(--t-20)', fontWeight: 600 }}>
-              Visualize from a markdown file
+              Visualise from a markdown file
             </h2>
             <p style={{ margin: 0, fontSize: 'var(--t-14)', color: 'var(--fg-2)', lineHeight: 1.5 }}>
               Upload a structured markdown file describing your service stages, swimlanes, and KPIs — Viewprint renders it as an interactive blueprint.
