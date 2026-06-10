@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FileText, Sparkles, Upload } from 'lucide-react';
+import { ArrowRight, FileText, Upload } from 'lucide-react';
 import { useApp } from '@/components/AppProvider';
 import { createClient } from '@/lib/supabase';
 import { parseMarkdown } from '@/lib/parser';
@@ -107,6 +107,18 @@ export default function LandingPage() {
           </p>
         </div>
 
+        {/* Demo CTA */}
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button
+            className="btn btn--primary"
+            style={{ borderRadius: 999, paddingLeft: 24, paddingRight: 24, gap: 10, fontSize: 'var(--t-15)' }}
+            onClick={loadDemo}
+          >
+            View example blueprint
+            <ArrowRight size={16} />
+          </button>
+        </div>
+
         {/* Dropzone */}
         <div
           className={`dropzone${dragging ? ' dropzone--drag' : ''}${error ? ' dropzone--error' : ''}`}
@@ -137,17 +149,6 @@ export default function LandingPage() {
             <FileText size={12} />
             Markdown format with stage sections and swimlane fields
           </div>
-        </div>
-
-        {/* Demo */}
-        <div className="landing__demo">
-          <p style={{ color: 'var(--fg-2)', fontSize: 'var(--t-14)' }}>
-            Don&apos;t have a file yet?
-          </p>
-          <button className="btn btn--ghost" onClick={loadDemo}>
-            <Sparkles size={14} />
-            Load demo blueprint
-          </button>
         </div>
 
         {/* Format reference card */}
