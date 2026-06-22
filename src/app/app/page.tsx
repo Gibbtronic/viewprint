@@ -87,6 +87,17 @@ export default function DashboardPage() {
       });
   }, [user]);
 
+  const filtered = useMemo(() => {
+    return blueprints.filter(bp => {
+      if (filter !== 'All' && bp.status !== filter) return false;
+      if (query) {
+        const q = query.toLowerCase();
+        return bp.title.toLowerCase().includes(q) || bp.description.toLowerCase().includes(q);
+      }
+      return true;
+    });
+  }, [blueprints, filter, query]);
+
   if (!user) {
     return (
       <main className="app__main">
@@ -99,17 +110,6 @@ export default function DashboardPage() {
       </main>
     );
   }
-
-  const filtered = useMemo(() => {
-    return blueprints.filter(bp => {
-      if (filter !== 'All' && bp.status !== filter) return false;
-      if (query) {
-        const q = query.toLowerCase();
-        return bp.title.toLowerCase().includes(q) || bp.description.toLowerCase().includes(q);
-      }
-      return true;
-    });
-  }, [blueprints, filter, query]);
 
   function openBlueprint(bp: SavedBlueprint) {
     setMarkdown(bp.markdown ?? '', bp.id, bp.ownerId);
