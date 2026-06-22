@@ -144,7 +144,7 @@ export default function EditorPage() {
               )}
             </div>
             {isOwner && isDbId(id) && (
-              <button className="btn btn--ghost" onClick={() => setShowShare(true)}>
+              <button className="btn btn--ghost btn--share" onClick={() => setShowShare(true)}>
                 <Share2 size={14} />
                 Share
               </button>

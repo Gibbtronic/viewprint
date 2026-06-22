@@ -303,6 +303,8 @@ code {
 .btn--ghost:hover:not(:disabled) { background: var(--bg-card); box-shadow: var(--shadow-card-hover); }
 .btn--ghost:active:not(:disabled) { background: var(--bg-press); }
 
+.btn--share { padding: 6px 20px; }
+
 .btn--block { width: 100%; }
 
 .icon-btn {

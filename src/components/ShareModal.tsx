@@ -116,8 +116,8 @@ export function ShareModal({ blueprintId }: { blueprintId: string }) {
         <div className="modal__body">
           {isOwner && (
             <>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <div className="field" style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div className="field__input" style={{ flex: 1, margin: 0 }}>
                   <Mail size={14} color="var(--fg-3)" />
                   <input
                     type="email"
@@ -125,7 +125,6 @@ export function ShareModal({ blueprintId }: { blueprintId: string }) {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && invite()}
-                    style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 'var(--t-14)' }}
                   />
                 </div>
                 <button className="btn btn--primary" onClick={invite} disabled={inviting || !email.trim()}>

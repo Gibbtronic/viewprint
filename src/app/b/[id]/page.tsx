@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import {
   ArrowRight, BarChart2, Brain, Database, Eye,
-  Layers, Monitor, RefreshCw, Server, Target, Users,
+  Layers, Monitor, RefreshCw, Server, Share2, Target, Users,
 } from 'lucide-react';
 import { useApp } from '@/components/AppProvider';
 import { summarize } from '@/lib/parser';
@@ -79,10 +79,15 @@ function KpiCell({ kpis, max = 3 }: { kpis: Stage['kpis']; max?: number }) {
   );
 }
 
+function isDbId(id: string): boolean {
+  return !id.startsWith('local-') && id !== 'demo';
+}
+
 export default function OverviewPage() {
   const { id } = useParams<{ id: string }>();
-  const { blueprint, setMarkdown, clearBlueprint } = useApp();
+  const { user, blueprint, setMarkdown, clearBlueprint, currentOwnerId, setShowShare } = useApp();
   const router = useRouter();
+  const isOwner = !!user && currentOwnerId === user.id;
 
   if (!blueprint) {
     router.replace('/');
@@ -116,6 +121,12 @@ export default function OverviewPage() {
             )}
           </div>
           <div className="screen__hdr-actions">
+            {isOwner && isDbId(id) && (
+              <button className="btn btn--ghost btn--share" onClick={() => setShowShare(true)}>
+                <Share2 size={14} />
+                Share
+              </button>
+            )}
             <button className="btn btn--ghost" onClick={() => { clearBlueprint(); router.push('/'); }}>
               <RefreshCw size={14} />
               Upload new file
