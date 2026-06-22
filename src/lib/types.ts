@@ -37,6 +37,7 @@ export interface SavedBlueprint {
   stageCount: number;
   lastEdited: string;
   owner: string;
+  ownerId: string;
   status: 'Published' | 'Draft';
   markdown?: string;
 }
@@ -45,4 +46,10 @@ export interface User {
   id: string;
   name: string;
   email: string;
+}
+
+export interface Collaborator {
+  userId: string;
+  email: string;
+  name: string;
 }

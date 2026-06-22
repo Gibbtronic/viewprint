@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { CheckCircle, Edit, Eye, FileText, Layers } from 'lucide-react';
+import { CheckCircle, Edit, Eye, FileText, Layers, Share2 } from 'lucide-react';
 import { useApp } from '@/components/AppProvider';
 import { createClient } from '@/lib/supabase';
 import { parseMarkdown } from '@/lib/parser';
@@ -66,7 +66,8 @@ function DocumentPreview({ markdown }: { markdown: string }) {
 
 export default function EditorPage() {
   const { id } = useParams<{ id: string }>();
-  const { blueprint, markdown, setMarkdown } = useApp();
+  const { user, blueprint, markdown, setMarkdown, currentOwnerId, setShowShare } = useApp();
+  const isOwner = !!user && currentOwnerId === user.id;
   const router = useRouter();
   const [localMd, setLocalMd] = useState(markdown);
   const [saveState, setSaveState] = useState<SaveState>('saved');
@@ -142,6 +143,12 @@ export default function EditorPage() {
                 <><CheckCircle size={12} color="var(--success-500)" />All changes saved</>
               )}
             </div>
+            {isOwner && isDbId(id) && (
+              <button className="btn btn--ghost" onClick={() => setShowShare(true)}>
+                <Share2 size={14} />
+                Share
+              </button>
+            )}
           </div>
         </div>
       </div>

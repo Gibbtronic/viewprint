@@ -16,6 +16,7 @@ interface DbRow {
   markdown: string;
   status: 'Published' | 'Draft';
   updated_at: string;
+  owner_id: string;
 }
 
 function formatDate(iso: string): string {
@@ -28,7 +29,7 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-function rowToSavedBlueprint(row: DbRow): SavedBlueprint {
+function rowToSavedBlueprint(row: DbRow, currentUserId: string, ownerNames: Record<string, string>): SavedBlueprint {
   const bp = parseMarkdown(row.markdown);
   return {
     id: row.id,
@@ -36,7 +37,8 @@ function rowToSavedBlueprint(row: DbRow): SavedBlueprint {
     description: bp.description,
     stageCount: bp.stages.length,
     status: row.status,
-    owner: 'You',
+    owner: row.owner_id === currentUserId ? 'You' : (ownerNames[row.owner_id] ?? 'Unknown'),
+    ownerId: row.owner_id,
     lastEdited: formatDate(row.updated_at),
     markdown: row.markdown,
   };
@@ -65,10 +67,22 @@ export default function DashboardPage() {
     const supabase = createClient();
     supabase
       .from('blueprints')
-      .select('id, title, markdown, status, updated_at')
+      .select('id, title, markdown, status, updated_at, owner_id')
       .order('updated_at', { ascending: false })
-      .then(({ data }) => {
-        if (data) setBlueprints((data as DbRow[]).map(rowToSavedBlueprint));
+      .then(async ({ data }) => {
+        const rows = (data ?? []) as DbRow[];
+        const otherOwnerIds = Array.from(new Set(rows.map(r => r.owner_id).filter(id => id !== user.id)));
+        let ownerNames: Record<string, string> = {};
+        if (otherOwnerIds.length > 0) {
+          const { data: profiles } = await supabase
+            .from('profiles')
+            .select('id, name, email')
+            .in('id', otherOwnerIds);
+          ownerNames = Object.fromEntries(
+            (profiles ?? []).map(p => [p.id, p.name || p.email.split('@')[0]])
+          );
+        }
+        setBlueprints(rows.map(r => rowToSavedBlueprint(r, user.id, ownerNames)));
         setLoading(false);
       });
   }, [user]);
@@ -98,7 +112,7 @@ export default function DashboardPage() {
   }, [blueprints, filter, query]);
 
   function openBlueprint(bp: SavedBlueprint) {
-    setMarkdown(bp.markdown ?? '', bp.id);
+    setMarkdown(bp.markdown ?? '', bp.id, bp.ownerId);
     router.push(`/b/${bp.id}`);
   }
 
@@ -210,12 +224,15 @@ export default function DashboardPage() {
                     </td>
                     <td>
                       <div className="dash-row__owner">
-                        <div className="avatar avatar--sm">{initials}</div>
-                        {user.name}
+                        <div className="avatar avatar--sm">
+                          {bp.owner === 'You' ? initials : bp.owner.slice(0, 2).toUpperCase()}
+                        </div>
+                        {bp.owner}
                       </div>
                     </td>
                     <td style={{ color: 'var(--fg-2)', fontSize: 'var(--t-12)' }}>{bp.lastEdited}</td>
                     <td onClick={e => e.stopPropagation()}>
+                      {bp.ownerId === user.id && (
                       <div style={{ position: 'relative' }} ref={openMenuId === bp.id ? menuRef : null}>
                         <button
                           className="icon-btn"
@@ -236,6 +253,7 @@ export default function DashboardPage() {
                           </div>
                         )}
                       </div>
+                      )}
                     </td>
                   </tr>
                 ))}

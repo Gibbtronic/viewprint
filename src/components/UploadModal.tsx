@@ -37,7 +37,7 @@ export function UploadModal() {
         .select('id')
         .single();
       if (data?.id) {
-        setMarkdown(md, data.id);
+        setMarkdown(md, data.id, user.id);
         close();
         router.push(`/b/${data.id}`);
         return;
@@ -58,7 +58,7 @@ export function UploadModal() {
         .select('id')
         .single();
       if (data?.id) {
-        setMarkdown(DEMO_MARKDOWN, data.id);
+        setMarkdown(DEMO_MARKDOWN, data.id, user.id);
         close();
         router.push(`/b/${data.id}`);
         return;

@@ -275,6 +275,7 @@ export const DEMO_BLUEPRINTS: SavedBlueprint[] = [
     stageCount: 6,
     lastEdited: '2 hours ago',
     owner: 'You',
+    ownerId: 'demo',
     status: 'Published',
     markdown: DEMO_MARKDOWN,
   },
@@ -285,6 +286,7 @@ export const DEMO_BLUEPRINTS: SavedBlueprint[] = [
     stageCount: 5,
     lastEdited: 'Yesterday',
     owner: 'Priya M.',
+    ownerId: 'demo',
     status: 'Draft',
   },
   {
@@ -294,6 +296,7 @@ export const DEMO_BLUEPRINTS: SavedBlueprint[] = [
     stageCount: 7,
     lastEdited: '3 days ago',
     owner: 'Devon K.',
+    ownerId: 'demo',
     status: 'Published',
   },
   {
@@ -303,6 +306,7 @@ export const DEMO_BLUEPRINTS: SavedBlueprint[] = [
     stageCount: 4,
     lastEdited: 'Last week',
     owner: 'You',
+    ownerId: 'demo',
     status: 'Draft',
   },
 ];

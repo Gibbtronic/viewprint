@@ -10,8 +10,9 @@ interface AppState {
   user: User | null;
   markdown: string;
   currentId: string | null;
+  currentOwnerId: string | null;
   blueprint: Blueprint | null;
-  setMarkdown: (md: string, id?: string) => void;
+  setMarkdown: (md: string, id?: string, ownerId?: string) => void;
   clearBlueprint: () => void;
   signOut: () => Promise<void>;
   showAuth: boolean;
@@ -21,6 +22,8 @@ interface AppState {
   setShowExport: (v: boolean) => void;
   showUpload: boolean;
   setShowUpload: (v: boolean) => void;
+  showShare: boolean;
+  setShowShare: (v: boolean) => void;
 }
 
 const AppContext = createContext<AppState | null>(null);
@@ -28,6 +31,7 @@ const AppContext = createContext<AppState | null>(null);
 const LS = {
   markdown: 'vp.markdown',
   id:       'vp.id',
+  ownerId:  'vp.ownerId',
 };
 
 function load<T>(key: string, fallback: T): T {
@@ -59,6 +63,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [user, setUserState] = useState<User | null>(null);
   const [markdown, setMarkdownState] = useState<string>(() => load(LS.markdown, ''));
   const [currentId, setCurrentId] = useState<string | null>(() => load(LS.id, null));
+  const [currentOwnerId, setCurrentOwnerId] = useState<string | null>(() => load(LS.ownerId, null));
   const [showAuth, setShowAuthState] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
 
@@ -68,6 +73,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
   const [showExport, setShowExport] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
+  const [showShare, setShowShare] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -85,20 +91,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     [markdown]
   );
 
-  const setMarkdown = useCallback((md: string, id?: string) => {
+  const setMarkdown = useCallback((md: string, id?: string, ownerId?: string) => {
     setMarkdownState(md);
     save(LS.markdown, md);
     if (id !== undefined) {
       setCurrentId(id);
       save(LS.id, id);
     }
+    if (ownerId !== undefined) {
+      setCurrentOwnerId(ownerId);
+      save(LS.ownerId, ownerId);
+    }
   }, []);
 
   const clearBlueprint = useCallback(() => {
     setMarkdownState('');
     setCurrentId(null);
+    setCurrentOwnerId(null);
     localStorage.removeItem(LS.markdown);
     localStorage.removeItem(LS.id);
+    localStorage.removeItem(LS.ownerId);
   }, []);
 
   const signOut = useCallback(async () => {
@@ -107,11 +119,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AppContext.Provider value={{
-      user, markdown, currentId, blueprint,
+      user, markdown, currentId, currentOwnerId, blueprint,
       setMarkdown, clearBlueprint, signOut,
       showAuth, setShowAuth, authMode,
       showExport, setShowExport,
       showUpload, setShowUpload,
+      showShare, setShowShare,
     }}>
       {children}
     </AppContext.Provider>
